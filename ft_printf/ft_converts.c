@@ -62,6 +62,7 @@ void	ft_converts(va_list test, t_struct *save)
 			while (arg[i] >= 32 && arg[i] <= 126)
 			{
 				ft_putchar(arg[i]);
+				save->retour = save->retour + 1;
 				i++;
 			}
 			if (arg[i] > 126)
@@ -78,6 +79,7 @@ void	ft_converts(va_list test, t_struct *save)
 		while (i < prec)
 		{
 			ft_putchar(argument[i]);
+			save->retour = save->retour + 1;
 			i++;
 		}
 	}

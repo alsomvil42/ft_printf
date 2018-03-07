@@ -22,23 +22,25 @@ OBJ = $(SRC:.c=.o)
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
 NAME = libftprintf.a
+
 all : $(NAME)
 
 $(NAME): $(OBJ)
-	ar rc ftprintf.a $(OBJ)
+	#ar rc ftprintf.a $(OBJ)
 	make -C libft
-	libtool libft/libft.a ftprintf.a -o $(NAME)
+	ar -x libft/libft.a
+	ar -rc $(NAME) *.o libft/*.o
 	rm -f ftprintf.a
 
 %.o: src/%.c
 	gcc -c -I include -I libft $^ -o $@
 
 clean :
-	make clean -C libft/
-	rm -rf $(OBJ)
+	make clean -C libft
+	rm -rf *.o
 
 fclean: clean
-	make fclean -C libft/
+	make fclean -C libft
 	rm -rf $(NAME)
 
 re: fclean all
