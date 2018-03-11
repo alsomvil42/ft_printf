@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 01:45:59 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/02/27 10:46:03 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/11 22:43:03 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_apply(va_list test, t_struct *save);
 void	ft_convertdi(va_list test, t_struct *save);
 void	ft_convertpxou(va_list test, t_struct *save);
 void	ft_convertpourcent(void);
-char	*ft_checkoptionint(t_struct *save, char *str);
+char	*ft_checkoptionint(t_struct *save, char *str,int neg);
 int		ft_checkoptionchar(t_struct *save, char *str);
 void	ft_checkoptionchart(t_struct *save, int nb);
 
