@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 03:18:32 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/11 21:26:16 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/13 03:22:20 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,17 @@ int		ft_nextarg(va_list test, t_struct *save, char *tmpformat, int i)
 	if (tmpformat[i] == '%')
 	{
 		nextarg = ft_checkarg(save, &tmpformat[i + 1], &temp, 0);
-		j = ft_stockmodif(save, &tmpformat[i + 1], 0, temp);
+		ft_stockmodif(save, &tmpformat[i + 1], 0, temp);
 		if (nextarg != NULL)
 			ft_apply(test, save);
 		nextarg = NULL;
 	}
-	return (j + 1);
+	return (temp + 2);
 }
 
 int		ft_printstart(t_struct *save, char *tmpformat, int *i)
 {
+	//printf("TEST= %s\n", &tmpformat[*i]);
 	while (tmpformat[*i] && tmpformat[*i] != '%')
 	{
 		save->retour = save->retour + 1;
@@ -78,9 +79,9 @@ int		ft_printf(const char *format, ...)
 	save.retour = 0;
 	tmpformat = ft_strdup(format);
 	va_start(test, format);
-	ft_bzero(&save, sizeof(t_struct));
 	while (ft_printstart(&save, tmpformat, &i) == 1)
 	{
+		ft_bzero(&save, sizeof(t_struct));
 		i = i + (ft_nextarg(test, &save, &tmpformat[i], 0));
 	}
 	va_end(test);

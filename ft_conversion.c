@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 07:07:13 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/02/01 08:38:40 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/13 03:17:22 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,35 @@
 
 void	ft_checkflag(t_struct *save, char *str, int *i)
 {
-	if (str[0] == 'h')
+	int		j;
+
+	j = 0;
+	while (str[j])
 	{
-		if (str[1] && str[1] == 'h')
+		if (str[j] == 'h')
 		{
-			save->flaghh = 1;
-			(*i)++;
+			if (str[j + 1] && str[j + 1] == 'h')
+			{
+				save->flaghh = 1;
+				(*i)++;
+				j++;
+			}
+			else
+				save->flagh = 1;
 		}
-		else
-			save->flagh = 1;
-	}
-	if (str[0] == 'l')
-	{
-		if (str[1] && str[1] == 'l')
+		if (str[j] == 'l')
 		{
-			save->flagll = 1;
-			(*i)++;
+			if (str[j + 1] && str[j + 1] == 'l')
+			{
+				save->flagll = 1;
+				(*i)++;
+				j++;
+			}
+			else
+				save->flagl = 1;
 		}
-		else
-			save->flagl = 1;
+		if (str[j] + 1)
+			j++;
 	}
 }
 
@@ -74,7 +84,9 @@ void	ft_checksize(t_struct *save, char *str, int *i, int temp)
 		save->largueur = ft_strndup(str, n);
 	}
 	if (*i < temp)
+	{
 		ft_checkoptionone(save, str, i);
+	}
 }
 
 int		ft_stockmodif(t_struct *save, char *str, int i, int temp)

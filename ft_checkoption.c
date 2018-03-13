@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 13:31:44 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/12 00:29:44 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/13 03:38:11 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		ft_checkoptionchar(t_struct *save, char *str)
 	}
 }
 
-char	*ft_checkoptionint(t_struct *save, char *str, int neg)
+char	*ft_checkoptionint(t_struct *save, char *str, int *neg)
 {
 	int		lengthstr;
 	int		length;
@@ -75,25 +75,63 @@ char	*ft_checkoptionint(t_struct *save, char *str, int neg)
 		prec = ft_atoi(save->precision);
 	if (save->largueur != NULL)
 		lengthstr = ft_atoi(save->largueur);
-	while (lengthstr > length || prec > length)
+	if (prec == 0 && lengthstr == 0 && save->pos == 1 && *neg == 0)
+	{
+		ft_putchar('+');
+		save->retour = save->retour + 1;
+	}
+	while ((lengthstr > length || prec > length) && save->neg == 0)
 	{
 		while (lengthstr > prec && lengthstr > length)
 		{
-			ft_putchar(' ');
+			if (save->zero == 1 && save->pos == 0)
+			{
+				if (*neg == 1)
+				{
+					ft_putchar('-');
+					(*neg)--;
+					lengthstr--;
+					save->retour = save->retour + 1;
+				}
+				save->retour = save->retour + 1;
+				ft_putchar('0');
+			}
+			else if ((save->zero == 1 && save->pos == 1) ||
+					(lengthstr > (prec + 1)))
+			{
+				if (lengthstr > (prec + 1))
+				{
+					ft_putchar(' ');
+					save->retour = save->retour + 1;
+				}
+			}
+			else if (save->pos == 0)
+			{
+				ft_putchar(' ');
+				save->retour = save->retour + 1;
+			}
 			lengthstr--;
-			if (lengthstr == length + 1 && neg == 1)
+			if (lengthstr == length + 1 && *neg == 1)
 			{
 				ft_putchar('-');
-				neg--;
+				save->retour = save->retour + 1;
+				(*neg)--;
 				lengthstr--;
 			}
 		}
 		while (prec > length)
 		{
-			if (neg == 1)
+			if (*neg == 1)
 			{
-				neg--;
+				(*neg)--;
 				ft_putchar('-');
+				save->retour = save->retour + 1;
+			}
+			if (save->pos == 1)
+			{
+				save->pos = 0;
+				ft_putchar('+');
+				save->retour = save->retour + 1;
 			}
 			save->retour = save->retour + 1;
 			ft_putchar('0');
@@ -101,7 +139,28 @@ char	*ft_checkoptionint(t_struct *save, char *str, int neg)
 			prec--;
 		}
 	}
-	if (neg == 1)
+	if (save->neg == 1 && save->largueur != NULL)
+	{
+		if (*neg == 1)
+		{
+			length = ft_atoi(save->largueur) - (ft_strlen(str) + 1);
+			save->retour = save->retour + 1;
+		}
+		else
+			length = ft_atoi(save->largueur) - (ft_strlen(str));
+		(*neg)--;
+		while (length > 0)
+		{
+			ft_putchar(' ');
+			save->retour = save->retour + 1;
+			length--;
+		}
+	}
+	if (*neg == 1)
+	{
+		(*neg)--;
 		ft_putchar('-');
+		save->retour = save->retour + 1;
+	}
 	return (str);
 }

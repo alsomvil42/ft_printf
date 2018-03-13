@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 03:36:29 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/12 00:31:20 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/13 02:24:33 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,31 +121,25 @@ void	ft_convertdi(va_list test, t_struct *save)
 			&& !save->flagl && !save->flagll)
 	{
 		arg = va_arg(test, int);
+		if (save->neg == 1)
+			ft_putnbr(arg);
 		if (arg < 0)
 		{
 			arg = -arg;
-			save->retour = save->retour + 1;
 			neg = 1;
 		}
-		retour = ft_strlen(ft_itoabase(arg, 10) + 1);
-		if (save->largueur && ft_atoi(save->largueur) > retour)
-			save->retour = save->retour + ft_atoi(save->largueur);
-		else
-		{
-			save->retour = save->retour + retour + 1;
-		}
-		ft_checkoptionint(save, ft_itoa(arg), neg);
-		if (save->pos && neg == 0)
-		{
-			ft_putchar('+');
-			save->retour = save->retour + 1;
-		}
-		else if (save->space)
+		retour = ft_strlen(ft_itoabase(arg, 10));
+		if (save->space)
 		{
 			ft_putchar(' ');
 			save->retour = save->retour + 1;
 		}
-		ft_putnbr(arg);
+		ft_checkoptionint(save, ft_itoa(arg), &neg);
+		if (neg > 0)
+			save->retour = save->retour + 1;
+		if (save->neg != 1)
+			ft_putnbr(arg);
+		save->retour = save->retour + retour;
 	}
 	else
 	{
@@ -153,11 +147,12 @@ void	ft_convertdi(va_list test, t_struct *save)
 		if (argument < 0)
 		{
 			argument = -argument;
-			save->retour = save->retour + 1;
 			neg = 1;
 		}
 		retour = ft_strlen(ft_itoabase(argument, 10));
-		ft_checkoptionint(save, ft_itoabase(argument, 10), neg);
+		ft_checkoptionint(save, ft_itoabase(argument, 10), &neg);
+		if (neg > 0)
+			save->retour = save->retour + 1;
 		save->retour = save->retour + retour;
 		ft_putnbr((long long)argument);
 	}

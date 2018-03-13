@@ -7,8 +7,8 @@ int	main(void)
 	int	retour2;
 
 	setlocale(LC_ALL, "");
-	retour = ft_printf("%.5d", -421);
-	retour2 = printf("%.5d", -421);
+	retour = ft_printf("%20.12ld", 0x11ffaa147);
+	retour2 = printf("%20.12ld", 0x11ffaa147);
 	printf("VRAI = %d\n", retour2);
 	printf("FAUX = %d\n", retour);
 	return (0);
