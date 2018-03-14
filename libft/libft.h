@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/24 20:04:23 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/02/21 15:23:25 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/14 14:12:10 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 void				ft_putchar(char c);
+void				ft_putnbrunsigned(unsigned long long, int fd);
 void				ft_putstr(char const *s);
 void				ft_putendl(char const *s);
 void				ft_putchar_fd(char c, int fd);

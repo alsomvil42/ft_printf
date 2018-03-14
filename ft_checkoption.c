@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 13:31:44 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/13 03:38:11 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/14 10:30:51 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,15 @@ char	*ft_checkoptionint(t_struct *save, char *str, int *neg)
 	int		lengthstr;
 	int		length;
 	int		prec;
+	int		space;
 
 
 	lengthstr = 0;
 	prec = 0;
+	space = 0;
 	length = ft_strlen(str);
+	if ((*neg) == 0)
+		space = 1;
 	if (save->precision != NULL)
 		prec = ft_atoi(save->precision);
 	if (save->largueur != NULL)
@@ -94,7 +98,13 @@ char	*ft_checkoptionint(t_struct *save, char *str, int *neg)
 					save->retour = save->retour + 1;
 				}
 				save->retour = save->retour + 1;
-				ft_putchar('0');
+				if (space == 1 && save->space)
+				{
+					space--;
+					ft_putchar(' ');
+				}
+				else
+					ft_putchar('0');
 			}
 			else if ((save->zero == 1 && save->pos == 1) ||
 					(lengthstr > (prec + 1)))

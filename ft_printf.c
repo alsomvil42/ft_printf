@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 03:18:32 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/13 03:22:20 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/14 11:02:32 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,11 @@ int		ft_printf(const char *format, ...)
 	i = 0;
 	save.retour = 0;
 	tmpformat = ft_strdup(format);
+	ft_removestruct(&save, 1);
 	va_start(test, format);
 	while (ft_printstart(&save, tmpformat, &i) == 1)
 	{
-		ft_bzero(&save, sizeof(t_struct));
+		ft_removestruct(&save, 0);
 		i = i + (ft_nextarg(test, &save, &tmpformat[i], 0));
 	}
 	va_end(test);

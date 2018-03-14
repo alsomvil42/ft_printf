@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 14:33:53 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/02/21 11:16:50 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/14 13:46:16 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,14 @@ void	ft_putnbr_fd(long nb, int fd)
 			ft_putnbr_fd(nb / 10, fd);
 		ft_putchar_fd(nbr, fd);
 	}
+}
+
+void	ft_putnbrunsigned(unsigned long long nb, int fd)
+{
+	unsigned long long	nbr;
+
+	nbr = (nb % 10) + '0';
+	if (nb >= 10)
+		ft_putnbr_fd(nb / 10, fd);
+	ft_putchar_fd(nbr, fd);
 }

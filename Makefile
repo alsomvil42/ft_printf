@@ -6,7 +6,7 @@
 #    By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/26 17:04:04 by alsomvil          #+#    #+#              #
-#    Updated: 2018/02/27 12:57:08 by alsomvil         ###   ########.fr        #
+#    Updated: 2018/03/14 14:18:37 by alsomvil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ SRC = ft_printf.c \
 	  ft_conversion.c \
 	  ft_convertpxou.c \
 	  ft_converts.c \
-	  ft_printuni.c
+	  ft_printuni.c \
+	  ft_removestruct.c \
 
 OBJ = $(SRC:.c=.o)
 CC = gcc

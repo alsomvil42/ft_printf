@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 01:45:59 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/12 22:03:42 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/14 13:14:26 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,7 @@ void	ft_convertpourcent(void);
 char	*ft_checkoptionint(t_struct *save, char *str,int *neg);
 int		ft_checkoptionchar(t_struct *save, char *str);
 void	ft_checkoptionchart(t_struct *save, int nb);
+void	ft_removestruct(t_struct *save, int i);
+void	ft_unsigned(int arg, t_struct *save);
 
 #endif

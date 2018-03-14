@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 07:07:13 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/13 03:17:22 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/03/14 12:23:48 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int		ft_stockmodif(t_struct *save, char *str, int i, int temp)
 	{
 		if (str[i] == '.')
 		{
-			if (str[++i] >= '1' && str[i] <= '9')
+			if (str[++i] >= '0' && str[i] <= '9')
 			{
 				test = i;
 				while (str[i] >= '0' && str[i] <= '9' && n++ > -1)
@@ -108,7 +108,10 @@ int		ft_stockmodif(t_struct *save, char *str, int i, int temp)
 				save->precision = ft_strndup(&str[test], n);
 			}
 			else
+			{
+				save->precision = ft_strdup("0");
 				i++;
+			}
 		}
 		if (i < temp)
 		{

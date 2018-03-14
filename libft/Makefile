@@ -6,7 +6,7 @@
 #    By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/14 17:27:56 by alsomvil          #+#    #+#              #
-#    Updated: 2018/01/12 03:18:42 by alsomvil         ###   ########.fr        #
+#    Updated: 2018/03/14 14:12:36 by alsomvil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,9 @@ SRC =	ft_atoi.c \
 		ft_strtrim.c \
 		ft_swap.c \
 		ft_tolower.c \
-		ft_toupper.c 
+		ft_toupper.c \
+		ft_putnbrunsigned.c
+
 OBJ = $(SRC:.c=.o)
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
