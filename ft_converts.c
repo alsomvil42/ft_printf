@@ -6,177 +6,126 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 03:36:29 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/14 14:17:37 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/04/26 00:35:43 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-void	ft_applyuni(t_struct *save, wchar_t *arg)
+
+void	ft_converts_three(t_save *save, wchar_t *arg)
 {
 	int		i;
-	int		option;
-	int		length;
-	char	*temp;
 
 	i = 0;
-	option = 0;
+	ft_checkoptioncharuni(arg, save);
 	while (arg[i])
 	{
-		while (arg[i] >= 32 && arg[i] <= 126)
-		{
-			option++;
+		if (arg[i] && arg[i] >= 32 && arg[i] <= 126)
 			i++;
-		}
 		if (arg[i] > 126)
 		{
-			temp = ft_itoabase(arg[i], 2);
-			length = ft_strlen(temp);
-			if (length >= 8 && length <= 11)
-				option = option + 1;
-			if (length >= 12 && length <= 16)
-				option = option + 2;
-			if (length >= 16 && length <= 21)
-				option = option + 3;
+			if ((arg[i] >= 0xD800 && arg[i] <= 0xDFFF)
+					|| arg[i] > 0x10DFFF || arg[i] < 0)
+			{
+				save->start = NULL;
+				save->retour = -1;
+				return ;
+			}
+			i++;
 		}
-		i++;
 	}
-	//printf("%d\n", option);
-	ft_checkoptionchart(save, option);
+	i = 0;
 }
 
-void	ft_converts(va_list test, t_struct *save)
+void	ft_converts_four(va_list test, t_save *save, wchar_t *arg)
 {
 	int		i;
-	int		prec;
+
+	i = 0;
+	arg = va_arg(test, wchar_t*);
+	if (arg == NULL)
+	{
+		ft_putstr_return("(null)", save);
+		return ;
+	}
+	if (save->precisionnull == 1)
+	{
+		if (save->largeur > 0)
+			while (i++ < save->largeur)
+				ft_putchar_return(' ', save);
+		return ;
+	}
+	ft_converts_three(save, arg);
+	while (arg[i] && i < save->spaceuni)
+	{
+		if (arg[i] && arg[i] >= 32 && arg[i] <= 126)
+			ft_putchar_return(arg[i], save);
+		if (arg[i] && arg[i] > 126)
+			ft_printuniw(arg[i], save, 0);
+		i++;
+	}
+}
+
+void	ft_converts(va_list test, t_save *save)
+{
 	wchar_t	*arg;
 	char	*argument;
 
-	i = 0;
 	arg = NULL;
-	if (save->conversion == 'S')
-	{
-		arg = va_arg(test, wchar_t*);
-		ft_applyuni(save, arg);
-		while (arg[i])
-		{
-			while (arg[i] >= 32 && arg[i] <= 126)
-			{
-				ft_putchar(arg[i]);
-				save->retour = save->retour + 1;
-				i++;
-			}
-			if (arg[i] > 126)
-			{
-				ft_printuniw(arg[i]);
-				i++;
-			}
-		}
-	}
+	if ((save->conversion == 'S' || (save->conversion == 's'
+					&& save->flagl == 1)) && MB_CUR_MAX > 1)
+		ft_converts_four(test, save, arg);
+	else if ((save->conversion == 'S' || (save->conversion == 's'
+					&& save->flagl == 1)) && MB_CUR_MAX <= 1)
+		ft_converts_one(test, save);
 	else
 	{
 		argument = va_arg(test, char*);
-		prec = ft_checkoptionchar(save, argument);
-		while (i < prec)
+		if (argument == NULL)
 		{
-			ft_putchar(argument[i]);
-			save->retour = save->retour + 1;
-			i++;
+			argument = ft_strdup("(null)\0");
+			ft_checkoptionchar(save, argument);
+			ft_memdel((void **)&argument);
+			return ;
 		}
+		ft_checkoptionchar(save, argument);
 	}
 }
 
-void	ft_convertc(va_list test, t_struct *save)
+void	ft_convertc_one(va_list test, t_save *save)
+{
+	char	argument;
+
+	argument = (char)va_arg(test, int);
+	if ((save->conversion == 'C' || (save->conversion == 'c'
+					&& save->flagl == 1))
+			&& argument == 0 && MB_CUR_MAX <= 1)
+		save->retour = -1;
+	if (save->conversion != 'c' && save->retour != -1)
+		ft_putstr_return(save->start, save);
+	ft_checkoptionchart(save, argument);
+}
+
+void	ft_convertc(va_list test, t_save *save)
 {
 	int		i;
 	wchar_t	arg;
-	char	argument;
 
 	i = 0;
-	if (save->conversion == 'C')
+	if ((save->conversion == 'C' || (save->conversion == 'c' && save->flagl))
+			&& MB_CUR_MAX > 1)
 	{
 		arg = va_arg(test, wchar_t);
+		if ((arg >= 0xD800 && arg <= 0xDFFF) || arg > 0x10DFFF || arg < 0)
+		{
+			save->start = NULL;
+			save->retour = -1;
+			return ;
+		}
+		else if (save->flagl == 0)
+			ft_putstr_return(save->start, save);
 		ft_printuni(save, arg);
 	}
 	else
-	{
-		argument = (char)va_arg(test, int);
-		ft_checkoptionchart(save, 0);
-		ft_putchar(argument);
-	}
-}
-
-void	ft_convertdi(va_list test, t_struct *save)
-{
-	int		i;
-	int		arg;
-	int		retour;
-	long long	argument;
-	int		neg;
-
-	i = 0;
-	arg = 0;
-	neg = 0;
-	if ((save->conversion == 'i' || save->conversion == 'd'
-			|| save->conversion == 'u')
-			&& !save->flagl && !save->flagll)
-	{
-		arg = va_arg(test, int);
-		if (save->conversion == 'u' && arg < 0)
-		{
-		//	printf("%d\n", arg);
-			ft_putnbrunsigned((unsigned int)arg, 0);
-			return ;
-		}
-		if (save->neg == 1)
-			ft_putnbr(arg);
-		if (arg < 0)
-		{
-			arg = -arg;
-			neg = 1;
-		}
-		retour = ft_strlen(ft_itoabase(arg, 10));
-		if (save->space && save->pos == 0 && neg == 0)
-		{
-			ft_putchar(' ');
-			save->retour = save->retour + 1;
-		}
-		ft_checkoptionint(save, ft_itoa(arg), &neg);
-		if (neg > 0)
-			save->retour = save->retour + 1;
-		if ((save->precision && ft_atoi(save->precision) == 0)
-				&& arg == 0 && save->space == 0)
-			return ;
-		else if (save->neg != 1)
-			ft_putnbr(arg);
-		save->retour = save->retour + retour;
-	}
-	else
-	{
-		argument = va_arg(test, long long);
-		if (argument < 0)
-		{
-			argument = -argument;
-			neg = 1;
-		}
-		retour = ft_strlen(ft_itoabase(argument, 10));
-		ft_checkoptionint(save, ft_itoabase(argument, 10), &neg);
-		if (neg > 0)
-			save->retour = save->retour + 1;
-		save->retour = save->retour + retour;
-		if ((save->precision && ft_atoi(save->precision) == 0)
-				&& argument == 0 && save->space == 0)
-			return ;
-		else if ((save->precision && ft_atoi(save->precision) == 0)
-				&& argument == 0 && save->space == 1)
-		{
-			ft_putchar(' ');
-			return ;
-		}
-		ft_putnbr((long long)argument);
-	}
-}
-
-void	ft_convertpourcent(void)
-{
-	ft_putchar('%');
+		ft_convertc_one(test, save);
 }

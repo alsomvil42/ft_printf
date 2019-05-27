@@ -6,7 +6,7 @@
 #    By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/14 17:27:56 by alsomvil          #+#    #+#              #
-#    Updated: 2018/03/14 14:12:36 by alsomvil         ###   ########.fr        #
+#    Updated: 2018/03/21 12:09:09 by alsomvil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,12 +34,15 @@ SRC =	ft_atoi.c \
 		ft_memmove.c \
 		ft_memset.c \
 		ft_putchar.c \
+		ft_putchar_return.c \
 		ft_putchar_fd.c \
 		ft_putendl.c \
 		ft_putendl_fd.c \
+		ft_putnbr_return.c \
 		ft_putnbr.c \
 		ft_putnbr_fd.c \
 		ft_putstr.c \
+		ft_putstr_return.c \
 		ft_putstr_fd.c \
 		ft_split_whitespaces.c \
 		ft_sqrt.c \

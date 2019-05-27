@@ -6,16 +6,15 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 03:18:32 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/14 11:02:32 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/04/26 00:50:22 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdarg.h>
-#include <stdio.h>
 #include <locale.h>
 
-char	*ft_checkarg(t_struct *save, char *str, int *temp, int i)
+char	*ft_checkarg(t_save *save, char *str, int *temp, int i)
 {
 	char	*stockarg;
 
@@ -33,7 +32,7 @@ char	*ft_checkarg(t_struct *save, char *str, int *temp, int i)
 	return (stockarg);
 }
 
-int		ft_nextarg(va_list test, t_struct *save, char *tmpformat, int i)
+int		ft_nextarg(va_list test, t_save *save, char *tmpformat, int i)
 {
 	int		temp;
 	int		j;
@@ -41,28 +40,33 @@ int		ft_nextarg(va_list test, t_struct *save, char *tmpformat, int i)
 
 	temp = 0;
 	j = 0;
+	nextarg = NULL;
 	while (tmpformat[i] && tmpformat[i] != '%')
 		i++;
 	if (tmpformat[i] == '%')
 	{
 		nextarg = ft_checkarg(save, &tmpformat[i + 1], &temp, 0);
-		ft_stockmodif(save, &tmpformat[i + 1], 0, temp);
 		if (nextarg != NULL)
-			ft_apply(test, save);
-		nextarg = NULL;
+			ft_stockmodif(save, nextarg, 0, temp);
+		ft_apply(test, save);
+		ft_memdel((void **)&nextarg);
 	}
 	return (temp + 2);
 }
 
-int		ft_printstart(t_struct *save, char *tmpformat, int *i)
+int		ft_printstart(t_save *save, char *tmpformat, int *i)
 {
-	//printf("TEST= %s\n", &tmpformat[*i]);
+	int		length;
+	int		start;
+
+	length = 0;
+	start = *i;
 	while (tmpformat[*i] && tmpformat[*i] != '%')
 	{
-		save->retour = save->retour + 1;
-		ft_putchar(tmpformat[*i]);
+		length++;
 		(*i)++;
 	}
+	save->start = ft_strndup(&tmpformat[start], length);
 	if (tmpformat[*i] == '%')
 		return (1);
 	return (0);
@@ -73,18 +77,25 @@ int		ft_printf(const char *format, ...)
 	va_list		test;
 	char		*tmpformat;
 	int			i;
-	t_struct	save;
+	int			temp;
+	t_save		save;
 
 	i = 0;
 	save.retour = 0;
 	tmpformat = ft_strdup(format);
 	ft_removestruct(&save, 1);
 	va_start(test, format);
-	while (ft_printstart(&save, tmpformat, &i) == 1)
+	temp = 1;
+	while (save.retour != -1 && temp == 1)
 	{
 		ft_removestruct(&save, 0);
+		temp = ft_printstart(&save, tmpformat, &i);
 		i = i + (ft_nextarg(test, &save, &tmpformat[i], 0));
 	}
+	if (save.start != NULL && save.retour != -1)
+		ft_putstr_return(save.start, &save);
 	va_end(test);
+	ft_memdel((void **)&save.start);
+	ft_memdel((void **)&tmpformat);
 	return (save.retour);
 }

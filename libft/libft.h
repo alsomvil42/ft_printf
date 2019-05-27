@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/24 20:04:23 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/14 14:12:10 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/04/24 05:09:16 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,30 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct		s_save
+{
+	int		precision;
+	int		precisionnull;
+	int		largeur;
+	int		nbarg;
+	int		spaceuni;
+	char	conversion;
+	char	*start;
+	int		space;
+	int		pos;
+	int		dieze;
+	int		zero;
+	int		neg;
+	int		flagh;
+	int		flaghh;
+	int		flagl;
+	int		flagll;
+	int		flagj;
+	int		flagz;
+	int		retour;
+	int		i;
+}					t_save;
 
 char				*ft_strndup(const char *s1, int n);
 void				*ft_memset(void *b, int c, size_t len);
@@ -69,14 +93,18 @@ char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 void				ft_putchar(char c);
-void				ft_putnbrunsigned(unsigned long long, int fd);
+void				ft_putchar_return(char c, t_save *save);
+void				ft_putnbrunsigned(unsigned long long nb, t_save *save);
 void				ft_putstr(char const *s);
 void				ft_putendl(char const *s);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
+void				ft_putstr_return(char const *s, t_save *save);
 void				ft_putendl_fd(char const *s, int fd);
 void				ft_putnbr_fd(long n, int fd);
+void				ft_putnbr_fd(long n, int fd);
 void				ft_putnbr(long n);
+void				ft_putnbr_return(long long n, t_save *save);
 char				*ft_strrev(char *str);
 char				*ft_itoabase(unsigned long long nb, int base);
 char				*ft_itoa(int nb);

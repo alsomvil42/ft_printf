@@ -6,7 +6,7 @@
 /*   By: alsomvil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/06 02:14:26 by alsomvil          #+#    #+#             */
-/*   Updated: 2018/03/11 20:36:26 by alsomvil         ###   ########.fr       */
+/*   Updated: 2018/04/24 04:10:11 by alsomvil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,6 @@ char		*ft_itoabase(unsigned long long nb, int base)
 	char	*str;
 
 	neg = 0;
-//	if (nb == -2147483648 && base == 10)
-//		return (ft_strdup("-2147483648"));
-//	if (nb < 0)
-//	{
-//		neg = 1;
-//		nb = -nb;
-//	}
-//	printf("%lld\n", nb);
 	len = ft_lenum(nb, base);
 	if (!(str = ft_memalloc(sizeof(char) * (len + 1 + neg))))
 		return (NULL);
